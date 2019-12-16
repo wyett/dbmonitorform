@@ -1,9 +1,7 @@
 package com.wyett.agent;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wyett.agent.util.ExecUtil;
-import com.wyett.agent.util.ParseInsInfoUtil;
+import com.wyett.agent.util.ParseUtil;
 import com.wyett.common.dto.InsInfoDto;
 import com.wyett.common.util.MonitorConfigUtils;
 import org.I0Itec.zkclient.ZkClient;
@@ -14,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.instrument.Instrumentation;
-import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryUsage;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -142,13 +138,13 @@ public class MonitorAgent {
 
         ExecUtil execUtil = new ExecUtil();
 
-        List<Map<String, Object>> lmso = new ArrayList<>();
-        lmso = execUtil.loadTask();
+//        List<Map<String, Object>> lmso = new ArrayList<>();
+//        lmso = execUtil.loadTask();
 
-        for(Map<String, Object> mso : lmso) {
+        for(Map<String, Object> mso : execUtil.loadTask()) {
             String cmd = execUtil.getCmd(mso);
             int internal = execUtil.getIntneralTime(mso);
-            insInfoDto = ParseInsInfoUtil.bindInsInfoToObject(execUtil.exec(cmd, 5000));
+            insInfoDto = ParseUtil.bindInsInfoToObject(execUtil.exec(cmd, 5000));
             insInfoDto.setHostIp(getLocalIp());
             // todo
         }

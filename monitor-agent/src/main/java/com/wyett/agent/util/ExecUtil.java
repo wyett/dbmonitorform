@@ -26,6 +26,11 @@ public class ExecUtil {
 
     private static String taskFile = MonitorConfigUtils.getProperty("task.scheduler.conf");
 
+    private static List<Map<String, Object>> taskList = null;
+
+    public ExecUtil() {
+    }
+
     /**
      * load task conf, and convert it to maps
      * @return
@@ -80,7 +85,7 @@ public class ExecUtil {
      * @param key
      * @return
      */
-    public Object getKeyValue(Map<String, Object> map, String key) {
+    private Object getKeyValue(Map<String, Object> map, String key) {
         return map.containsKey(key) && map.get(key) != null ? map.get(key) : null;
     }
 
@@ -109,6 +114,10 @@ public class ExecUtil {
     public int getIntneralTime(Map<String, Object> map) {
         return map.containsKey("internal") &&
                 map.get("internal") != null ? (int) map.get("internal") : 5;
+    }
+
+    public String getObjectClass(Map<String, Object> map) {
+        return (String) getKeyValue(map, "resultJson");
     }
 
     /**
@@ -148,11 +157,6 @@ public class ExecUtil {
         }
 
         return result;
-    }
-
-    @Test
-    public void test() {
-        System.out.println(loadTask());
     }
 
 }
