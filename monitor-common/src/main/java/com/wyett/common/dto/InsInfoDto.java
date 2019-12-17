@@ -16,6 +16,7 @@ import java.util.Arrays;
 @ToString
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class InsInfoDto implements Serializable {
 //    rela_pers_2 436G 1744M 985G 457G 478G 49% / 0 0 0 0 0 0 0
     private String hostIp;
