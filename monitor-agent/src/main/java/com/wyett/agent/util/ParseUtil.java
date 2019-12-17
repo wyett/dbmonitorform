@@ -23,8 +23,6 @@ public class ParseUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ParseUtil.class);
 
-//    private static final String DTO_PACKAGE = "com.wyett.common.dto";
-
     //dbname 436G 1744M 985G 457G 478G 49% / 0 0 0 0 0 0 0
     public static InsInfoDto bindInsInfoToObject(String str) {
         // cast string to array
@@ -78,20 +76,4 @@ public class ParseUtil {
         }
         return result;
     }
-
-/*
-    public static <T> List<Class<T>> getClassInPackage() {
-        List<Class<T>> lct = new ArrayList<>();
-
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        try {
-            Enumeration<URL> urlEnumeration = loader.getResources(DTO_PACKAGE);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return lct;
-    }
-*/
-
 }

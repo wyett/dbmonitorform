@@ -26,7 +26,7 @@ public class ExecUtil {
 
     private static String taskFile = MonitorConfigUtils.getProperty("task.scheduler.conf");
 
-    private static List<Map<String, Object>> taskList = null;
+//    private static List<Map<String, Object>> taskList = null;
 
     public ExecUtil() {
     }
@@ -35,8 +35,8 @@ public class ExecUtil {
      * load task conf, and convert it to maps
      * @return
      */
-    public List<Map<String, Object>> loadTask() {
-        List<Map<String, Object>> cmdList = new ArrayList<>();
+    public List<Map<String, String>> loadTask() {
+        List<Map<String, String>> cmdList = new ArrayList<>();
         MonitorConfigUtils mcu = new MonitorConfigUtils(taskFile);
 
         // method name
@@ -65,11 +65,11 @@ public class ExecUtil {
      * @param splitStr
      * @return
      */
-    public Map<String, Object> convertConfToMap(String str, String splitStr) {
+    public Map<String, String> convertConfToMap(String str, String splitStr) {
         if (!str.contains(splitStr) && !str.contains(":")) {
             return null;
         }
-        Map<String, Object> maps =
+        Map<String, String> maps =
                 Arrays.asList(str.split(splitStr))
                         .stream().map(s -> s.split(":"))
                         .collect(HashMap::new,
@@ -85,7 +85,7 @@ public class ExecUtil {
      * @param key
      * @return
      */
-    private Object getKeyValue(Map<String, Object> map, String key) {
+    private String getKeyValue(Map<String, String> map, String key) {
         return map.containsKey(key) && map.get(key) != null ? map.get(key) : null;
     }
 
@@ -94,7 +94,7 @@ public class ExecUtil {
      * @param map
      * @return
      */
-    public String getCmd(Map<String, Object> map) {
+    public String getCmd(Map<String, String> map) {
         String scriptFile = System.getProperties().getProperty("user.dir") + "/"
                 + (String) getKeyValue(map, "script");
 
@@ -111,31 +111,33 @@ public class ExecUtil {
      * @param map
      * @return
      */
-    public int getIntneralTime(Map<String, Object> map) {
+    /*
+    public int getIntneralTime(Map<String, String> map) {
         return map.containsKey("internal") &&
-                map.get("internal") != null ? (int) map.get("internal") : 5;
+                map.get("internal") != null ? Integer.parseInt(map.get("internal")) : 5;
     }
+     */
 
-    public String getObjectClass(Map<String, Object> map) {
+    public String getClassName(Map<String, String> map) {
         return (String) getKeyValue(map, "resultJson");
     }
 
     /**
      * exec command
      * @param cmd
-     * @param mills
+     * @param waitTime
      * @return
      */
-    public String exec(String cmd, int mills) {
+    public String exec(String cmd, int waitTime) {
         Process process = null;
         InputStream in = null;
-        String result = null;
+        String result = "";
 
         try {
             // exec cmd
             try {
                 process = Runtime.getRuntime().exec(cmd);
-                process.waitFor(mills, TimeUnit.MILLISECONDS);
+                process.waitFor(waitTime, TimeUnit.MILLISECONDS);
 
             } catch (IOException | InterruptedException e) {
                 LOG.error("exec command failed: " + cmd);

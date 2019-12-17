@@ -1,3 +1,7 @@
-[2019-12-14 19:41:38] MonitorConfigUtils.main - ERROR - get property map error, key is cmd
- [2019-12-14 19:45:42] MonitorConfigUtils.main - ERROR - get property map error, key is cmd
+[2019-12-17 16:21:09] ExecUtil.main - ERROR - cmd file does not exists
+ [2019-12-17 16:22:41] ExecUtil.main - ERROR - cmd file does not exists
+ [2019-12-17 16:23:58] ExecUtil.main - ERROR - cmd file does not exists
+ [2019-12-17 16:42:57] ExecUtil.main - ERROR - cmd file does not exists
+ [2019-12-17 16:48:34] ExecUtil.main - ERROR - cmd file does not exists
+ [2019-12-17 17:23:04] ExecUtil.main - ERROR - cmd file does not exists
  

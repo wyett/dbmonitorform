@@ -9,7 +9,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
@@ -87,7 +89,8 @@ public class PackageUtil {
                 } else {
                     String fileName = childFile.getName();
                     if (fileName.endsWith(postfix) && !fileName.contains("$")) {
-                        lct.add(Class.forName(fileName));
+                        System.out.println(fileName);
+                        lct.add(Class.forName(packageName + "." + fileName.replace(".class", "")));
                     }
                 }
             }
@@ -134,11 +137,10 @@ public class PackageUtil {
      * @param lc
      * @return
      */
-    public static List<String> convertClassToString(List<Class<?>> lc) {
+    public static Map<String, Class<?>> convertClassToString(List<Class<?>> lc) {
         return lc.stream()
-                .map(f -> f.getName().split("\\."))
-                .filter(f -> f.length > 0)
-                .map(f -> f[f.length - 1])
-                .collect(Collectors.toList());
+                .collect(HashMap::new,
+                        (m, s) -> m.put(s.getName(), s),
+                        (m1, m2) -> m1.putAll(m2));
     }
 }
