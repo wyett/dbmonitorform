@@ -15,6 +15,7 @@ import java.util.*;
 
 public class MonitorConfigUtils {
     private static final Logger LOG = LoggerFactory.getLogger(MonitorConfigUtils.class);
+
     private static Properties properties;
     private static String configName;
 
@@ -51,13 +52,14 @@ public class MonitorConfigUtils {
     private static void getResource(String name) {
         String osName = System.getProperties().getProperty("os.name");
         try {
-            /*if (osName.contains("Win") || osName.contains("Mac")) {
+            if (osName.contains("Win") || osName.contains("Mac")) {
                 properties.load(MonitorConfigUtils.class.getClassLoader().getResourceAsStream(name));
             } else if(osName.contains("Linux")) {
                 properties.load(new FileInputStream(
                         System.getProperties().getProperty("user.dir") + "/" + name));
-            }*/
-            properties.load(new FileInputStream(System.getProperties().getProperty("user.dir") + "/" + name));
+            }
+//            properties.load(new FileInputStream(System.getProperty("user.dir") + "/" + name));
+//            properties.load(new FileInputStream(name));
         } catch (IOException e) {
             e.printStackTrace();
         }

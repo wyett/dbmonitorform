@@ -18,10 +18,7 @@ import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author : wyettLei
@@ -36,14 +33,17 @@ public class MonitorAgent {
 
     private static final String ZK_CONN = MonitorConfigUtils.getProperty("zk.servers");
     private static final String ROOT_PATH = MonitorConfigUtils.getProperty("zk.root.path");
-    private static final int CONN_TIMEOUT = MonitorConfigUtils.getIntProperty("zk.session.timeout");
-    private static final int SESSION_TIMEOUT = MonitorConfigUtils.getIntProperty("zk.connection.timeout");
+    private static final int SESSION_TIMEOUT = MonitorConfigUtils.getIntProperty("zk.session.timeout");
+    private static final int CONN_TIMEOUT = MonitorConfigUtils.getIntProperty("zk.connection.timeout");
     private static final long SCHEDULER_INTERNAL = MonitorConfigUtils.getLongProperty("task.scheduler.internal");
 
-    // presistent and sequence
-    private static final String SERVICE_PATH = ROOT_PATH + "/service";
-    // "/monitor/service0000000001"
-    private String nodePath;
+    private static String hostIp;
+    static {
+        hostIp = getLocalIp();
+    }
+
+    // server node,
+    private static final String SERVER_PATH = ROOT_PATH + "/" + hostIp;
 
     private ZkClient zkClient;
     private Thread stateThread;
@@ -54,6 +54,7 @@ public class MonitorAgent {
     public static MonitorAgent getInstance() {
         return agent;
     }
+
 
     /**
      * init agent
@@ -71,15 +72,15 @@ public class MonitorAgent {
         //create root node
         createRootNode();
 
-        // create temp node
-        createServiceNode();
+        // create server node
+        createServerNode();
 
         // thread
         stateThread = new Thread(() -> {
             while(true) {
-                updateServiceNode();
+                updateServerNode();
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(SCHEDULER_INTERNAL);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -95,7 +96,7 @@ public class MonitorAgent {
     public void createRootNode() {
         if (!zkClient.exists(ROOT_PATH)) {
             List<ACL> list = new ArrayList<>();
-            int perm = ZooDefs.Perms.CREATE | ZooDefs.Perms.DELETE;
+            int perm = ZooDefs.Perms.CREATE | ZooDefs.Perms.DELETE | ZooDefs.Perms.READ;
             ACL acl = new ACL(perm, new Id("world", "anyone"));
             list.add(acl);
             zkClient.createPersistent(ROOT_PATH, "monitor root node", list);
@@ -104,30 +105,30 @@ public class MonitorAgent {
     }
 
     /**
-     * create service node
+     * save hearbeat info into server nodes
      */
-    public void createServiceNode() {
+    public void createServerNode() {
         List<ACL> aclList = new ArrayList<>();
         int perm = ZooDefs.Perms.READ | ZooDefs.Perms.WRITE;
         ACL acl = new ACL(perm, new Id("world", "anyone"));
         aclList.add(acl);
-        nodePath = zkClient.createEphemeralSequential(SERVICE_PATH, ParseResult(), aclList);
-        LOG.info("created service node: " + nodePath);
+        zkClient.createEphemeral(SERVER_PATH, getHreatbeatInfo(), aclList);
+        LOG.info("created service node: " + SERVER_PATH);
     }
 
     /**
-     * update service node
+     * update server node
      */
-    public void updateServiceNode() {
-        zkClient.writeData(nodePath, ParseResult());
-        LOG.info("updated node " + nodePath);
+    public void updateServerNode() {
+        zkClient.writeData(SERVER_PATH, getHreatbeatInfo());
+        LOG.info("updated node " + SERVER_PATH);
     }
 
     /**
      * get local host ip
      * @return
      */
-    private String getLocalIp() {
+    private static String getLocalIp() {
         InetAddress addr = null;
         try {
             addr = InetAddress.getLocalHost();
@@ -137,11 +138,15 @@ public class MonitorAgent {
         return addr.getHostAddress();
     }
 
+    /**
+     * get all dto
+     * @return
+     */
     private static Map<String, Class<?>> getAllDto() {
 
         List<Class<?>> classList = null;
         try {
-            List<Class<?>> lc = PackageUtil.getClassListInPackage(DTO_PKG, false, ".class");
+            classList = PackageUtil.getClassListInPackage(DTO_PKG, false, ".class");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -155,7 +160,27 @@ public class MonitorAgent {
     }
 
     /**
-     * parse result as Class<?>
+     * create heartbeat service info
+     * @return {service : timestamp}
+     */
+    public Map<String, Long> getHreatbeatInfo() {
+        ExecUtil execUtil = new ExecUtil();
+        Map<String, Class<?>> msc = getAllDto();
+
+        Map<String, Long> msd = execUtil.loadTask().stream()
+                .map(s -> "DTO_PKG" + "." + execUtil.getClassName(s))
+                .filter(s -> msc.keySet().stream().anyMatch(k -> s.equals(k)))
+                .collect(HashMap::new,
+                        (m, s) -> m.put(s, System.currentTimeMillis()),
+                        (m1, m2) -> m1.putAll(m2));
+
+//        return JSON.toJSONString(msd);
+
+        return msd;
+    }
+
+    /**
+     * parse result as Class<?>, not used
      * @return
      */
     public Map<Class<?>, JSON> ParseResult() {
@@ -168,7 +193,7 @@ public class MonitorAgent {
         // result of all scripts
         Map<Class<?>, JSON> mcj = new HashMap<>();
 
-        Map<Class<?>, ?> mc = new HashMap<>();
+//        Map<Class<?>, ?> mc = new HashMap<>();
 
         for(Map<String, String> mso : execUtil.loadTask()) {
             String cmd = execUtil.getCmd(mso);
@@ -189,7 +214,7 @@ public class MonitorAgent {
                 // save
                 mcj.put(clazz, (JSONObject) JSON.toJSON(o));
 
-                mc.put(clazz, (clazz) o);
+//                mc.put(clazz, (clazz) o);
             } else {
                 msc.keySet().stream().forEach(System.out::println);
             }

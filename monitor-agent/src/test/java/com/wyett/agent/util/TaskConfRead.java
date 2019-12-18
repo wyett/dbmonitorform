@@ -30,7 +30,6 @@ public class TaskConfRead {
 
         for(Map<String, String> mso : lmso) {
             String cmd = eu.getCmd(mso);
-            int internal = eu.getIntneralTime(mso);
             String resultJson = eu.getClassName(mso);
 
             // check if exist Object
