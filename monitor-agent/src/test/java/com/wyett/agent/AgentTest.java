@@ -8,7 +8,6 @@ package com.wyett.agent;
 
 public class AgentTest {
 
-//    private static final String HOME_PATH = System.getProperties().getProperty("user.dir");
     public static void main(String[] args) {
         MonitorAgent.premain(null, null);
         try {

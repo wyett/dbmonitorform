@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wyett.agent.util.ExecUtil;
 import com.wyett.agent.util.ParseUtil;
-import com.wyett.common.dto.InsInfoDto;
 import com.wyett.common.util.MonitorConfigUtils;
 import com.wyett.common.util.PackageUtil;
 import org.I0Itec.zkclient.ZkClient;

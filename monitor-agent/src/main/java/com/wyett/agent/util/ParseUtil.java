@@ -2,16 +2,11 @@ package com.wyett.agent.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
-import com.wyett.common.dto.InsInfoDto;
+import com.wyett.common.bean.InstanceBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
 
 /**
  * @author : wyettLei
@@ -24,7 +19,7 @@ public class ParseUtil {
     private static final Logger LOG = LoggerFactory.getLogger(ParseUtil.class);
 
     //dbname 436G 1744M 985G 457G 478G 49% / 0 0 0 0 0 0 0
-    public static InsInfoDto bindInsInfoToObject(String str) {
+    public static InstanceBean bindInsInfoToObject(String str) {
         // cast string to array
         String[] arr = str.replaceAll("G|M","")
                 .replaceAll("\\s+", " ")
@@ -35,7 +30,7 @@ public class ParseUtil {
             return null;
         }
 
-        return InsInfoDto.builder()
+        return InstanceBean.builder()
                 .dbname(arr[0])
                 .dbSize(Integer.parseInt(arr[1]))
                 .tbSize(Integer.parseInt(arr[2]))

@@ -59,7 +59,6 @@ public class MonitorConfigUtils {
                         System.getProperties().getProperty("user.dir") + "/" + name));
             }
 //            properties.load(new FileInputStream(System.getProperty("user.dir") + "/" + name));
-//            properties.load(new FileInputStream(name));
         } catch (IOException e) {
             e.printStackTrace();
         }
