@@ -15,7 +15,7 @@
       <module name="dbmonitorform" target="1.5" />
       <module name="monitor-agent" target="1.8" />
       <module name="monitor-common" target="1.8" />
-      <module name="monitor-server" target="1.5" />
+      <module name="monitor-server" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

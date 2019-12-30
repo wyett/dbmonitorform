@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author : wyettLei
@@ -72,6 +73,56 @@ public class ZkServerServiceImpl implements ZkServerService {
         LOG.info("updated node " + serverNode);
     }
 
+    /**
+     * read data from node
+     * @param path
+     * @return
+     */
+    @Override
+    public String getData(String path) {
+        return zkUtil.getZkConnection().readData(path);
+    }
 
+    /**
+     * get child list
+     * @param path
+     * @return
+     */
+    @Override
+    public List<String> getClusterPathAsList(String path) {
+        return zkUtil.getZkConnection().getChildren(path).stream()
+                .map(p -> path + "/" + p)
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    public void initListener(String path) {
+        zkUtil.getZkConnection().unsubscribeAll();
+        zkUtil.getZkConnection().getChildren(path)
+                .stream()
+                .map(p -> path + "/" + p)
+                .forEach(p -> zkUtil.getZkConnection().subscribeDataChanges(p, new DataListenerImpl()));
+
+    }
+
+/*
+    private class DataChange implements IZkDataListener, IZkChildListener {
+
+        @Override
+        public void handleChildChange(String parentPath, List<String> currentChilds) throws Exception {
+
+        }
+
+        @Override
+        public void handleDataChange(String dataPath, Object data) throws Exception {
+
+        }
+
+        @Override
+        public void handleDataDeleted(String dataPath) throws Exception {
+
+        }
+    }
+
+ */
 }

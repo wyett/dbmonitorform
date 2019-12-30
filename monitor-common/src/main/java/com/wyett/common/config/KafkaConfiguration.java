@@ -9,18 +9,18 @@ import com.wyett.common.core.annotation.ReadConf;
  */
 
 public class KafkaConfiguration {
-    @ReadConf("{kafka.zk.configs}")
+    @ReadConf("${kafka.zk.configs}")
     private String kafkaZkConfig;
 
-    @ReadConf("{kafka.zk.root.path}")
+    @ReadConf("${kafka.zk.root.path}")
     private String kafkaRootPath;
 
-    @ReadConf("{kafka.servers}")
+    @ReadConf("${kafka.servers}")
     private String kafkaServers;
 
-    @ReadConf("{kafka.zk.limit.size}")
+    @ReadConf("${kafka.zk.limit.size}")
     private String kafkaZkLimitSize;
 
-    @ReadConf("{kafka.consumer.group.name}")
+    @ReadConf("${kafka.consumer.group.name}")
     private String kafkaConsumerGroup;
 }
