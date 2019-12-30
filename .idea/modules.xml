@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/dbmonitorform.iml" filepath="$PROJECT_DIR$/dbmonitorform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/monitor-agent/monitor-agent.iml" filepath="$PROJECT_DIR$/monitor-agent/monitor-agent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/monitor-common/monitor-common.iml" filepath="$PROJECT_DIR$/monitor-common/monitor-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/monitor-server/monitor-server.iml" filepath="$PROJECT_DIR$/monitor-server/monitor-server.iml" />
+    </modules>
+  </component>
+</project>
