@@ -11,19 +11,19 @@ import lombok.Data;
 
 @Data
 public class ZkServerConfiguration {
-    @ReadConf("{zk.servers}")
+    @ReadConf("${zk.servers}")
     private String zkServer;
 
-    @ReadConf("{zk.root.path}")
+    @ReadConf("${zk.root.path}")
     private String zkRootPath;
 
-    @ReadConf("{zk.session.timeout")
+    @ReadConf("${zk.session.timeout")
     private int zkSessionTimeOut;
 
-    @ReadConf("{zk.connection.timeout}")
+    @ReadConf("${zk.connection.timeout}")
     private int zkConnTimeOut;
 
-    @ReadConf("{zk.connection.limit.size}")
+    @ReadConf("${zk.connection.limit.size}")
     private int zkConnLimitSize;
 
 }
