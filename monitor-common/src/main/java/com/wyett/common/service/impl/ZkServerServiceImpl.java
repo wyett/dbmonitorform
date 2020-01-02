@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.wyett.common.config.ZkServerConfiguration;
 import com.wyett.common.service.ZkServerService;
 import com.wyett.common.util.ZkPoolUtil;
+import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.ACL;
@@ -105,24 +106,18 @@ public class ZkServerServiceImpl implements ZkServerService {
 
     }
 
-/*
-    private class DataChange implements IZkDataListener, IZkChildListener {
-
-        @Override
-        public void handleChildChange(String parentPath, List<String> currentChilds) throws Exception {
-
-        }
+    private class DataListenerImpl implements IZkDataListener {
 
         @Override
         public void handleDataChange(String dataPath, Object data) throws Exception {
-
+            LOG.info(dataPath + " content has changed " + JSON.toJSONString(data));
+            LOG.info(dataPath + " current contents " + getData(dataPath));
         }
 
         @Override
         public void handleDataDeleted(String dataPath) throws Exception {
-
+            LOG.info(dataPath + " was unreachable");
         }
     }
 
- */
 }

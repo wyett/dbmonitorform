@@ -1,9 +1,9 @@
 package com.wyett.server;
 
 import com.wyett.common.config.ZkServerConfiguration;
+import com.wyett.common.service.ZkServerService;
+import com.wyett.common.service.impl.ZkServerServiceImpl;
 import com.wyett.common.util.ZkPoolUtil;
-import org.I0Itec.zkclient.ZkClient;
-import org.I0Itec.zkclient.util.ZkPathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,12 +16,28 @@ import org.slf4j.LoggerFactory;
 public class ServerUtil {
     private static final Logger LOG = LoggerFactory.getLogger(ServerUtil.class);
 
+    private static ZkServerService zkServerService = new ZkServerServiceImpl();
+
+    // read config
     private static ZkServerConfiguration zkServerConfiguration;
-    private static ZkPoolUtil zkPool = ZkPoolUtil.getInstance();
+    private static String zkRootPath = zkServerConfiguration.getZkRootPath();
 
-    public ServerUtil() {
+    private static ServerUtil serverUtil;
 
+    // signleton
+    public static ServerUtil getInstance() {
+        if (serverUtil == null) {
+            return new ServerUtil();
+        }
+        return serverUtil;
     }
 
+    // contructor
+    public ServerUtil() {
+        zkServerService.createRootNode();
 
+        for (String s : zkServerService.getClusterPathAsList(zkRootPath)) {
+            zkServerService.initListener(s);
+        }
+    }
 }
