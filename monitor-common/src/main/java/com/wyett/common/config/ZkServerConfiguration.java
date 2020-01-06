@@ -9,21 +9,20 @@ import lombok.Data;
  * @description: TODO
  */
 
-@Data
-public class ZkServerConfiguration {
-    @ReadConf("${zk.servers}")
-    private String zkServer;
+public interface ZkServerConfiguration {
+    @ReadConf(value = "zk.servers")
+    String getZkServer();
 
-    @ReadConf("${zk.root.path}")
-    private String zkRootPath;
+    @ReadConf(value = "zk.root.path")
+    String getZkRootPath();
 
-    @ReadConf("${zk.session.timeout")
-    private int zkSessionTimeOut;
+    @ReadConf(value = "zk.session.timeout")
+    int getZkSessionTimeOut();
 
-    @ReadConf("${zk.connection.timeout}")
-    private int zkConnTimeOut;
+    @ReadConf(value = "zk.connection.timeout")
+    int getZkConnTimeOut();
 
-    @ReadConf("${zk.connection.limit.size}")
-    private int zkConnLimitSize;
+    @ReadConf(value = "zk.connection.limit.size")
+    int getZkConnLimitSize();
 
 }
