@@ -184,33 +184,4 @@ public class PropertyInvocationHandler implements InvocationHandler {
         }
         return Boolean.valueOf(value).booleanValue();
     }
-
-
-
-//    /**
-//     * split String by ","
-//     * @param sv
-//     * @return
-//     */
-//    private String[] getStringArray(String sv) {
-//        return getStringArray(sv, ",");
-//    }
-//
-//    /**
-//     * split String with splitStr
-//     * @param sv
-//     * @param splitStr
-//     * @return
-//     */
-//    private String[] getStringArray(String sv, String splitStr) {
-//        String[] value = null;
-//        if (sv == null) {
-//            value = null;
-//        } else if(sv.contains(splitStr)) {
-//            value = sv.split(splitStr);
-//        } else {
-//            value[0] = sv;
-//        }
-//        return value;
-//    }
 }
