@@ -17,7 +17,7 @@ public class Resource {
 
     private static final Logger LOG = LoggerFactory.getLogger(Resource.class);
 
-    private static InputStream getResource(String name) {
+    public static InputStream getResource(String name) {
         InputStream in = null;
         String osName = System.getProperties().getProperty("os.name");
         try {
