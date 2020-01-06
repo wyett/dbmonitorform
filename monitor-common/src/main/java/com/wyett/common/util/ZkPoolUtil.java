@@ -1,6 +1,8 @@
 package com.wyett.common.util;
 
+import com.wyett.common.config.Resource;
 import com.wyett.common.config.ZkServerConfiguration;
+import com.wyett.common.core.CfgFactory;
 import com.wyett.common.core.annotation.ReadConf;
 import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
@@ -21,7 +23,9 @@ public class ZkPoolUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ZkPoolUtil.class);
 
-    private static ZkServerConfiguration zkServerConfiguration;
+    private static ZkServerConfiguration zkServerConfiguration = CfgFactory.readProperties(
+            Resource.getResource("conf/config.properties"),
+            ZkServerConfiguration.class);
     private static ZkPoolUtil instance = null;
     // pool
     private static Vector<ZkClient> zkClientPool = null;
