@@ -1,13 +1,11 @@
 package com.wyett.common.config;
 
-import com.wyett.common.util.MonitorConfigUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
 
 /**
  * @author : wyettLei
