@@ -26,6 +26,7 @@ public class ZkPoolUtil {
     private static ZkServerConfiguration zkServerConfiguration = CfgFactory.readProperties(
             Resource.getResource("conf/config.properties"),
             ZkServerConfiguration.class);
+
     private static ZkPoolUtil instance = null;
     // pool
     private static Vector<ZkClient> zkClientPool = null;

@@ -18,6 +18,7 @@ public class ParseUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ParseUtil.class);
 
+    /*
     //dbname 436G 1744M 985G 457G 478G 49% / 0 0 0 0 0 0 0
     public static InstanceBean bindInsInfoToObject(String str) {
         // cast string to array
@@ -45,6 +46,8 @@ public class ParseUtil {
                         .mapToInt(Integer::parseInt).toArray()).build();
     }
 
+     */
+
     /**
      * format json string
      * @param s
@@ -56,7 +59,7 @@ public class ParseUtil {
 
     /**
      * parse jsonString into T object
-     * @param jsonString {"dbname":"tl_list_0","dbSize":"396G","tbSize":"792M","diskSize":"788G","diskSize":"411G",
+     * @param jsonString {"dbname":"dbname","dbSize":"396G","tbSize":"792M","diskSize":"788G","diskSize":"411G",
      *         "diskFreeSize":"337G","usedPct":"55%","path":"/","binlogSize":[0,0,0,0,0,0,0]}
      * @param t
      * @param <T>

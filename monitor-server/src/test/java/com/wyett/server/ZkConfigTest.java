@@ -1,5 +1,6 @@
 package com.wyett.server;
 
+import com.wyett.common.config.Resource;
 import com.wyett.common.config.ZkServerConfiguration;
 import com.wyett.common.core.CfgFactory;
 
@@ -12,8 +13,11 @@ import com.wyett.common.core.CfgFactory;
 public class ZkConfigTest {
     public static void main(String[] args) {
         ZkServerConfiguration zkc = CfgFactory.readProperties(
-                Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/config.properties"),
+                Resource.getResource("conf/config.properties"),
                 ZkServerConfiguration.class);
+
+        // close inputstream
+        Resource.release();
 
         System.out.println(zkc.getZkConnLimitSize());
     }

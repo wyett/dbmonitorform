@@ -1,5 +1,6 @@
 package com.wyett.common.config;
 
+import org.junit.After;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +18,9 @@ public class Resource {
 
     private static final Logger LOG = LoggerFactory.getLogger(Resource.class);
 
+    public static InputStream in = null;
+
     public static InputStream getResource(String name) {
-        InputStream in = null;
         String osName = System.getProperties().getProperty("os.name");
         try {
             if (osName.contains("Win") || osName.contains("Mac")) {
@@ -28,14 +30,17 @@ public class Resource {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
+        }
+        return in;
+    }
+
+    public static void release() {
+        if (in != null) {
             try {
                 in.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        LOG.debug("config loaded sucessfully...");
-        return in;
     }
 }

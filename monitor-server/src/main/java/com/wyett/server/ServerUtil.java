@@ -41,5 +41,7 @@ public class ServerUtil {
         for (String s : zkServerService.getClusterPathAsList(zkServerConfiguration.getZkRootPath())) {
             zkServerService.initListener(s);
         }
+
+        Resource.release();
     }
 }
